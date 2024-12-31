@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت نام</title>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.26.0/tabler-icons.min.css">
+    <style type="text/css" media="all">
+        label {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body class="bg-dark text-white">
+    <div class="container mt-4">
+        <form>
+            <div class="mb-3">
+                <label class="form-label">تاریخ تولد</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="birthdateInput" value="">
+                    <span class="input-group-text"><i class="ti ti-calendar"></i></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">نام کاربری</label>
+                <div class="input-group">
+
+
+                    <input type="text" class="form-control" value="">
+                    <span class="input-group-text"><i class="ti ti-user"></i></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">کلمه عبور</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="passwordInput" value="">
+                    <span class="input-group-text" id="togglePassword">
+                        <i class="ti ti-eye-off"></i>
+                    </span>
+                </div>
+            </div>
+            <textarea class="mb-3 form-control" rows="8" cols="40"></textarea>
+            <div class="mb-3">
+                <label class="form-label">جنسیت (اختیاری)</label>
+                <div>
+                    <input type="radio"class="d-none" id="male" name="gender" value="male">
+                    <label for="male" class="btn btn-secondary">مرد</label>
+                    <input type="radio" class="d-none"id="female" name="gender" value="female">
+                    <label for="female" class="btn btn-secondary">زن</label>
+                    <input type="radio" class="d-none"id="null" name="gender" value="null">
+                    <label for="null" class="btn btn-secondary">ترجیح می دهم که نگویم</label>
+
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">ایجاد حساب</button>
+            <button id="resetButton" style="position: fixed;bottom: 20px;right: 20px;" class="btn btn-danger" onclick="resetInputs()">ریست</button>
+
+            <p class="text-center text-muted mt-2">
+                .با کلیک بر روی ایجاد حساب، با شرایط استفاده و سیاست حفظ حریم خصوصی موافقت می کنید.
+            </p>
+        </form>
+    </div>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#togglePassword').click(function() {
+                // Change the input type
+                const passwordInput = $('#passwordInput');
+                const inputType = passwordInput.attr('type') === 'password' ? 'text': 'password';
+                passwordInput.attr('type', inputType);
+
+                // Toggle the eye icon
+                $(this).find('i').toggleClass('ti-eye-off ti-eye');
+            });
+            // هنگامی که کاربر بر روی یکی از دکمه‌ها کلیک می‌کند
+            $('input[name="gender"]').change(function() {
+                // ابتدا تمام دکمه‌ها را به حالت پیش‌فرض برمی‌گردانیم
+                $('label.btn').removeClass('btn-primary').addClass('btn-secondary');
+
+                // سپس دکمه‌ای که انتخاب شده است را به حالت active در می‌آوریم
+                if ($(this).is(':checked')) {
+                    $(this).next('label').removeClass('btn-secondary').addClass('btn-primary');
+                }
+            });
+            $('#birthdateInput').on('input',
+                function() {
+                    let input = $(this).val();
+
+                    // حذف هرگونه کاراکتر غیر عددی
+                    input = input.replace(/\D/g, ' ');
+
+                    // تقسیم ورودی به آرایه‌ای از اعداد
+                    let parts = input.trim().split(/\s+/);
+
+                    // بررسی تعداد اجزای ورودی
+                    if (parts.length === 3) {
+                        let year = parts[0];
+                        let month = parts[1].padStart(2, '0'); // افزودن صفر در سمت چپ اگر لازم باشد
+                        let day = parts[2].padStart(2, '0'); // افزودن صفر در سمت چپ اگر لازم باشد
+
+                        // ساختن تاریخ به فرمت YYYY/MM/DD
+                        $(this).val(`${year}/${month}/${day}`);
+                    } else {
+                        // اگر تعداد اجزا کمتر از 3 باشد، ورودی را خالی بگذارید
+                        $(this).val(input);
+                    }
+                });
+            $('input[name="gender"]').change(function() {
+                $('label.btn').removeClass('btn-primary').addClass('btn-secondary');
+                if ($(this).is(':checked')) {
+                    $(this).next('label').removeClass('btn-secondary').addClass('btn-primary');
+                }
+            });
+            function clearDefault() {
+                const input = document.getElementById('birthdateInput');
+                if (input.value === '0000/00/00') {
+                    input.value = '';
+                }
+            }
+
+            function setDefault() {
+                const input = document.getElementById('birthdateInput');
+                if (input.value === '') {
+                    input.value = '0000/00/00';
+                }
+            }
+
+
+            $('#birthdateInput').on('input', function() {
+                let input = $(this).val();
+                input = input.replace(/\D/g, '');
+
+                if (input.length >= 8) {
+                    let year = input.substring(0, 4);
+                    let month = input.substring(4, 6);
+                    let day = input.substring(6, 8);
+                    $(this).val(`${year}/${month}/${day}`);
+                } else {
+                    $(this).val(input.replace(/(.{4})(.{2})(.{2})/, '$1/$2/$3'));
+                }
+            });
+
+        });
+        function showButton() {
+            document.getElementById('resetButton').style.display = 'block';
+        }
+
+        function resetInputs() {
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => input.value = '');
+            document.getElementById('resetButton').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html
