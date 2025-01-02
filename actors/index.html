@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa-IR">
+<head>
+    <title>اطلاعات بازیگران</title>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <meta name="color-scheme" content="dark light" />
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="https://webramin.storage.iran.liara.space/logo/ms-icon-144x144.png">
+    <!-- Logos -->
+    <link rel="apple-touch-icon" sizes="57x57" href="https://webramin.storage.iran.liara.space/logo/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://webramin.storage.iran.liara.space/logo/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://webramin.storage.iran.liara.space/logo/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://webramin.storage.iran.liara.space/logo/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://webramin.storage.iran.liara.space/logo/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://webramin.storage.iran.liara.space/logo/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://webramin.storage.iran.liara.space/logo/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://webramin.storage.iran.liara.space/logo/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://webramin.storage.iran.liara.space/logo/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://webramin.storage.iran.liara.space/logo/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://webramin.storage.iran.liara.space/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://webramin.storage.iran.liara.space/logo/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://webramin.storage.iran.liara.space/logo/favicon-16x16.png">
+    <link rel="manifest" href="https://webramin.storage.iran.liara.space/logo/manifest.json">
+    <!-- style css -->
+    <link rel="stylesheet" href="https://webramin.github.io/css/style.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://webramin.github.io/css/web.css" media="all" />
+    <link rel="stylesheet" href="https://webramin.github.io/font/iransans/iran-sans.css">
+    <link rel="stylesheet" href="https://webramin.github.io/font/bootstrap/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://webramin.github.io/css/ico-img/ico-img.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://webramin.github.io/js/jquery-3.7.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>اطلاعات بازیگران</h1>
+        <!-- فیلد جستجو -->
+        <input type="text" id="search" class="form-control" placeholder="جستجو...">
+        <!-- نتایج جستجو -->
+        <div id="search-results" class="list-group mt-3"></div>
+        <!-- اطلاعات بازیگر انتخاب‌شده -->
+        <div id="actors" class="mt-3"></div>
+    </div>
+
+    <!-- اسکریپت جاوااسکریپت -->
+    <script>
+        $(document).ready(function() {
+            let actorsData = [];
+
+            // بارگذاری داده‌های بازیگران از فایل JSON
+            $.getJSON('actorspro.json')
+            .done(function(data) {
+                actorsData = data;
+                console.log('Data loaded:', actorsData);
+            })
+            .fail(function(jqxhr, textStatus, error) {
+                console.error('Error fetching the actors data:', textStatus, error);
+            });
+
+            // اجرای جستجو بر اساس متن وارد شده توسط کاربر
+            $('#search').on('input', function() {
+                const searchValue = $(this).val().toLowerCase();
+                console.log('Search input:', searchValue);
+                if (searchValue) {
+                    displaySearchResults(searchValue);
+                } else {
+                    $('#search-results').empty();
+                }
+            });
+
+            // نمایش اطلاعات بازیگر انتخاب شده و پاک کردن فیلد جستجو
+            $(document).on('click',
+                '.search-result-item',
+                function() {
+                    const actorName = $(this).data('actorName');
+                    $('#search').val(''); // پاک کردن فیلد جستجو
+                    $('#search-results').empty(); // پاک کردن نتایج جستجو
+                    displayActorInfo(actorName);
+                });
+
+            function displaySearchResults(searchValue) {
+                const filteredActors = actorsData.filter(actor =>
+                    actor.name.toLowerCase().includes(searchValue)
+                );
+                console.log('Filtered actors:',
+                    filteredActors);
+                let resultsHTML = '';
+                filteredActors.forEach(actor => {
+                    resultsHTML += `<a href="#" class="list-group-item list-group-item-action search-result-item" data-actor-name="${actor.name}">${actor.name}</a>`;
+                });
+                $('#search-results').html(resultsHTML);
+            }
+
+            function displayActorInfo(actorName) {
+                const actor = actorsData.find(actor => actor.name === actorName);
+                if (actor) {
+                    const age = calculateAge(actor.birthYear);
+                    const actorHTML = `
+                    <div class="card">
+                    <img src="img/${actor.image}" class="card-img-top" alt="${actor.name}">
+                    <div class="card-body">
+                    <h5 class="card-title">${actor.name}</h5>
+                    <p class="card-text">${actor.birthYear} - ${age} سال</p>
+                    <p class="card-text">وضعیت: ${actor.status}</p>
+                    </div>
+                    </div>`;
+                    $('#actors').html(actorHTML);
+                }
+            }
+
+            function calculateAge(birthDateString) {
+                const [birthYear,
+                    birthMonth,
+                    birthDay] = birthDateString.split('/').map(Number);
+                const currentYear = getCurrentShamsiYear();
+                const today = new Date();
+                const currentMonth = today.getMonth() + 1;
+                const currentDay = today.getDate();
+
+                let age = currentYear - birthYear;
+                if (birthMonth > currentMonth || (birthMonth === currentMonth && birthDay > currentDay)) {
+                    age--;
+                }
+
+                return age;
+            }
+
+            function getCurrentShamsiYear() {
+                const today = new Date();
+                const day = today.getDate();
+                const month = today.getMonth() + 1; // ماه‌ها از 0 شروع می‌شوند
+                let year = today.getFullYear();
+                year -= ((month < 3) || ((month === 3) && (day < 21))) ? 622: 621;
+                // تبدیل تاریخ میلادی به شمسی...
+                return year;
+            }
+        });
+    </script>
+</body>
+</html>

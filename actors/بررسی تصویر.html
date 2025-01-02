@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <title>بررسی تصاویر</title>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" id="" content="#000000">
+    <meta name="color-scheme" content="dark light" />
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="https://webramin.storage.iran.liara.space/logo/ms-icon-144x144.png">
+    <!-- Logos -->
+    <link rel="apple-touch-icon" sizes="57x57" href="https://webramin.storage.iran.liara.space/logo/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://webramin.storage.iran.liara.space/logo/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://webramin.storage.iran.liara.space/logo/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://webramin.storage.iran.liara.space/logo/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://webramin.storage.iran.liara.space/logo/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://webramin.storage.iran.liara.space/logo/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://webramin.storage.iran.liara.space/logo/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://webramin.storage.iran.liara.space/logo/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://webramin.storage.iran.liara.space/logo/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://webramin.storage.iran.liara.space/logo/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://webramin.storage.iran.liara.space/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://webramin.storage.iran.liara.space/logo/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://webramin.storage.iran.liara.space/logo/favicon-16x16.png">
+    <link rel="manifest" href="https://webramin.storage.iran.liara.space/logo/manifest.json">
+    <!-- style css -->
+    <link rel="stylesheet" href="https://webramin.github.io/css/style.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://webramin.github.io/css/web.css" media="all" />
+    <link rel="stylesheet" href="https://webramin.github.io/font/iransans/iran-sans.css">
+    <link rel="stylesheet" href="https://webramin.github.io/font/bootstrap/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://webramin.github.io/css/ico-img/ico-img.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.26.0/tabler-icons.min.css">
+    <script src="https://webramin.github.io/js/jquery-3.7.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body[data-theme="light"] {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        body[data-theme="dark"] {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid currentColor;
+            border-radius: 5px;
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .btn svg {
+            margin-left: 8px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body data-theme="light" class="ir">
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    بررسی تصاویر برنامه
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+
+
+                            <th>تصویر</th>
+                            <th>وضعیت</th>
+                        </tr>
+                    </thead>
+                    <tbody id="imageList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="btn alert-primary bg-primary-lt" id="toggleButton">
+        <span>تغییر حالت</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline position-findex">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" />
+            <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" />
+            <path d="M3 12h1" />
+            <path d="M12 3v1" />
+            <path d="M5.6 5.6l.7 .7" />
+            <path d="M3 21l18 -18" />
+        </svg>
+    </div>
+    <script>
+        $(document).ready(function() {
+            const jsonUrl = 'https://webramin.storage.iran.liara.space/data/actorspro.json';
+
+            // بارگذاری داده‌های JSON از URL
+            $.getJSON(jsonUrl)
+            .done(function(data) {
+                console.log('Data loaded:', data);
+                processPeople(data);
+            })
+            .fail(function(jqxhr, textStatus, error) {
+                console.error('Error fetching the actors data:', textStatus, error);
+            });
+
+            // تابع برای بررسی تصاویر
+            function checkImage(url) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(true); // تصویر لود شد
+                    img.onerror = () => reject(false); // تصویر پیدا نشد
+                    img.src = url;
+                });
+            }
+
+            // پردازش لیست افراد و نمایش در جدول
+            function processPeople(people) {
+                people.forEach(person => {
+                    const imageUrl = 'img/' + person.image; // تغییر مسیر تصاویر به پوشه img
+                    checkImage(imageUrl)
+                    .then(() => {
+                        $('#imageList').append(`
+                            <tr>
+                            <td>${person.name}</td>
+                            <td class="p-2"><img src="${imageUrl}" alt="${person.name}" class="rounded" width="40" height="40"></td>
+                            <td><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1" class="ti ti-check-circle text-success" stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                            </td>
+                            </tr>
+                            `);
+                    })
+                    .catch(() => {
+                        $('#imageList').append(`
+                            <tr class="bg-danger-lt">
+                            <td>${person.name}</td>
+                            <td><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-photo-cancel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.616 -.593 1.328 -.792 2.008 -.598" /><path d="M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17 21l4 -4" /></svg></td>
+                            <td><svg class="ti ti-x-circle text-danger" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg> </td>
+                            </tr>
+                            `);
+                    });
+                });
+            }
+            var $body = $('body');
+            var $toggleButton = $('#toggleButton');
+            var $toggleIcon = $toggleButton.find('svg');
+
+            // Check for saved user preference, if any, on load of the website
+            var currentTheme = localStorage.getItem('theme') || 'light';
+            $body.attr('data-theme', currentTheme);
+            updateIcon(currentTheme);
+
+            $toggleButton.on('click', function() {
+                var newTheme = $body.attr('data-theme') === 'light' ? 'dark': 'light';
+                $body.attr('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+
+            function updateIcon(theme) {
+                if (theme === 'light') {
+                    $toggleIcon.html(`
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" />
+                        <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" />
+                        <path d="M3 12h1" />
+                        <path d="M12 3v1" />
+                        <path d="M5.6 5.6l.7 .7" />
+                        <path d="M3 21l18 -18" />
+                        `);
+                } else {
+                    $toggleIcon.html(`
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 9a3 3 0 0 0 0 6m0 -6a3 3 0 0 1 0 6" />
+                        <path d="M17.657 16.657a8 8 0 1 0 -11.314 -11.314" />
+                        <path d="M12 3v1m0 16v1" />
+                        <path d="M3 12h1m16 0h1" />
+                        <path d="M5.6 5.6l.7 .7m10.1 10.1l.7 .7" />
+                        <path d="M5.6 18.4l.7 -.7m10.1 -10.1l.7 -.7" />
+                        `);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
