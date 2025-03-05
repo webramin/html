@@ -3,62 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سازنده JSON</title>
+    <title>سازنده حرفه‌ای JSON</title>
+    
+    <!-- فونت ایرانی Vazirmatn -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    
     <!-- Tabler CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/css/tabler.min.css">
+    
     <!-- Tabler Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Vazirmatn, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        #output {
+            background-color: var(--bs-dark-bg-subtle);
+            color: var(--bs-dark-text);
+        }
+        
+        .theme-switcher {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+    </style>
 </head>
-<body class="p-4">
-    <div class="container">
-        <h1 class="text-center mb-4"><i class="ti ti-json"></i> سازنده JSON</h1>
-        
-        <!-- ورودی عنوان اصلی -->
-        <div class="mb-3">
-            <label class="form-label">عنوان اصلی:</label>
-            <input type="text" id="mainTitle" class="form-control" placeholder="مثال: Bootstrap Starter Template">
-        </div>
-
-        <!-- ورودی عنوان فرعی -->
-        <div class="mb-3">
-            <label class="form-label">عنوان فرعی:</label>
-            <input type="text" id="subTitle" class="form-control" placeholder="مثال: bs5-starter">
-        </div>
-        
-        <!-- ورودی کد -->
-        <div class="mb-3">
-            <label class="form-label">کد:</label>
-            <textarea rows="8" cols="40" id="subCode" class="form-control" placeholder="مثال: لینک CDN Tabler"></textarea>
-        </div>
-        
-        <!-- ورودی توضیحات -->
-        <div class="mb-3">
-            <label class="form-label">توضیحات:</label>
-            <input type="text" id="description" class="form-control" placeholder="مثال: افزودن لینک‌های CDN">
-        </div>
-
-        <!-- دکمه تولید -->
-        <button id="generateBtn" class="btn btn-primary w-100 mb-3">
-            <i class="ti ti-code"></i> تولید JSON
+<body class="p-4" data-bs-theme="light">
+    <!-- سوئیچ تم -->
+    <div class="theme-switcher">
+        <button class="btn btn-icon btn-outline-secondary" id="themeToggle">
+            <i class="ti ti-sun"></i>
         </button>
-
-        <!-- خروجی JSON -->
-        <pre id="output" class="bg-dark text-white p-3 rounded" style="display: none;"></pre>
     </div>
 
-    <!-- اسکریپت jQuery -->
+    <div class="container">
+        <header class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">
+                <i class="ti ti-json"></i> سازنده حرفه‌ای JSON
+            </h1>
+            <p class="lead text-muted">ابزاری قدرتمند برای تولید اسنیپت‌های JSON</p>
+        </header>
+
+        <!-- فرم ورودی -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">عنوان اصلی:</label>
+                    <input type="text" id="mainTitle" class="form-control" placeholder="مثال: Bootstrap Starter Template">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">عنوان فرعی:</label>
+                    <input type="text" id="subTitle" class="form-control" placeholder="مثال: bs5-starter">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">کد:</label>
+                    <textarea rows="8" id="subCode" class="form-control" placeholder="کدهای خود را وارد کنید..."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">توضیحات:</label>
+                    <input type="text" id="description" class="form-control" placeholder="توضیحات مختصر...">
+                </div>
+            </div>
+        </div>
+
+        <!-- کنترل‌ها -->
+        <div class="d-flex gap-2 mb-4">
+            <button id="generateBtn" class="btn btn-primary btn-lg flex-grow-1">
+                <i class="ti ti-code"></i> تولید JSON
+            </button>
+            <button id="copyBtn" class="btn btn-success btn-lg" style="display: none;">
+                <i class="ti ti-copy"></i> کپی
+            </button>
+        </div>
+
+        <!-- خروجی -->
+        <pre id="output" class="bg-dark text-white p-3 rounded shadow" style="display: none;"></pre>
+    </div>
+
+    <!-- Toast برای اطلاع‌رسانی -->
+    <div class="toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                محتوا با موفقیت کپی شد!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <!-- اسکریپت‌ها -->
     <script>
         $(document).ready(function() {
+            // مدیریت تم
+            const themeToggle = $('#themeToggle');
+            const body = $('body');
+            
+            function updateThemeIcon(theme) {
+                themeToggle.html(theme === 'dark' ? '<i class="ti ti-moon"></i>' : '<i class="ti ti-sun"></i>');
+            }
+
+            themeToggle.click(function() {
+                const newTheme = body.attr('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                body.attr('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+
+            // بازیابی تم ذخیره شده
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            body.attr('data-bs-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+
+            // تولید JSON
             $('#generateBtn').click(function() {
-                // دریافت مقادیر از ورودی‌ها
                 const mainTitle = $('#mainTitle').val().trim();
                 const subTitle = $('#subTitle').val().trim();
                 const codeLines = $('#subCode').val().split('\n');
                 const description = $('#description').val().trim();
 
-                // ایجاد ساختار JSON
                 const jsonStructure = {
                     [mainTitle]: {
                         "prefix": subTitle,
@@ -67,13 +139,26 @@
                     }
                 };
 
-                // تبدیل به رشته JSON با فرمت زیبا
                 const jsonString = JSON.stringify(jsonStructure, null, 4);
-
-                // نمایش خروجی
                 $('#output').text(jsonString).show();
+                $('#copyBtn').show();
+            });
+
+            // کپی محتوا با افکت
+            $('#copyBtn').click(function() {
+                const textToCopy = $('#output').text();
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    toast.show();
+                }).catch(err => {
+                    console.error('خطا در کپی:', err);
+                });
             });
         });
     </script>
+
+    <!-- Bootstrap JS برای توست -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/js/tabler.min.js"></script>
 </body>
-</html
+</html>
