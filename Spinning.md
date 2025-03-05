@@ -100,7 +100,7 @@
 
 
 ### چند نمونه دیگر
-```
+```json
 {
   "Popular Frameworks CDN": {
     "prefix": "cdn-frameworks",
@@ -132,7 +132,7 @@
 
 ---
 
-```
+```json
 {
   "Tabler CDN Setup": {
     "prefix": "tabler-cdn",
