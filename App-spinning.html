@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سازنده JSON</title>
+    <!-- Tabler CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/css/tabler.min.css">
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body class="p-4">
+    <div class="container">
+        <h1 class="text-center mb-4"><i class="ti ti-json"></i> سازنده JSON</h1>
+        
+        <!-- ورودی عنوان اصلی -->
+        <div class="mb-3">
+            <label class="form-label">عنوان اصلی:</label>
+            <input type="text" id="mainTitle" class="form-control" placeholder="مثال: Bootstrap Starter Template">
+        </div>
+
+        <!-- ورودی عنوان فرعی -->
+        <div class="mb-3">
+            <label class="form-label">عنوان فرعی:</label>
+            <input type="text" id="subTitle" class="form-control" placeholder="مثال: bs5-starter">
+        </div>
+        
+        <!-- ورودی کد -->
+        <div class="mb-3">
+            <label class="form-label">کد:</label>
+            <textarea rows="8" cols="40" id="subCode" class="form-control" placeholder="مثال: لینک CDN Tabler"></textarea>
+        </div>
+        
+        <!-- ورودی توضیحات -->
+        <div class="mb-3">
+            <label class="form-label">توضیحات:</label>
+            <input type="text" id="description" class="form-control" placeholder="مثال: افزودن لینک‌های CDN">
+        </div>
+
+        <!-- دکمه تولید -->
+        <button id="generateBtn" class="btn btn-primary w-100 mb-3">
+            <i class="ti ti-code"></i> تولید JSON
+        </button>
+
+        <!-- خروجی JSON -->
+        <pre id="output" class="bg-dark text-white p-3 rounded" style="display: none;"></pre>
+    </div>
+
+    <!-- اسکریپت jQuery -->
+    <script>
+        $(document).ready(function() {
+            $('#generateBtn').click(function() {
+                // دریافت مقادیر از ورودی‌ها
+                const mainTitle = $('#mainTitle').val().trim();
+                const subTitle = $('#subTitle').val().trim();
+                const codeLines = $('#subCode').val().split('\n');
+                const description = $('#description').val().trim();
+
+                // ایجاد ساختار JSON
+                const jsonStructure = {
+                    [mainTitle]: {
+                        "prefix": subTitle,
+                        "body": codeLines,
+                        "description": description
+                    }
+                };
+
+                // تبدیل به رشته JSON با فرمت زیبا
+                const jsonString = JSON.stringify(jsonStructure, null, 4);
+
+                // نمایش خروجی
+                $('#output').text(jsonString).show();
+            });
+        });
+    </script>
+</body>
+</html
